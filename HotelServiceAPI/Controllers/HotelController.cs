@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelServiceAPI.Dtos;
 using HotelServiceAPI.Models;
 using HotelServiceAPI.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HotelServiceAPI.Controllers
 {
@@ -27,19 +28,47 @@ namespace HotelServiceAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Hotel hotel)
+        public IActionResult Create([FromBody] CreateHotelDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var hotel = new Hotel
+            {
+                Name = dto.HotelName,
+                Address = dto.HotelAddress,
+                Description = dto.HotelDescription
+            };
+
             _service.Create(hotel);
-            return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, hotel);
+
+            var result = new HotelDto
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Address = hotel.Address,
+                Description = hotel.Description
+            };
+
+            return CreatedAtAction(nameof(GetById), new { id = hotel.Id }, result);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] Hotel hotel)
+        public IActionResult Update(int id, [FromBody] UpdateHotelDto dto)
         {
-            if (id != hotel.Id) return BadRequest();
-            if (!_service.GetAll().Any(h => h.Id == id)) return NotFound();
-            _service.Update(hotel);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var existingHotel = _service.GetById(id);
+            if (existingHotel == null)
+                return NotFound();
+
+            // Update entity fields with values from DTO
+            existingHotel.Name = dto.HotelName;
+            existingHotel.Address = dto.HotelAddress;
+            existingHotel.Description = dto.HotelDescription;
+
+            _service.Update(existingHotel);
+
             return NoContent();
         }
 
