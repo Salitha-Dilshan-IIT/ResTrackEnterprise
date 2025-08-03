@@ -1,6 +1,0 @@
-@SpecialRequestServiceAPI_HostAddress = http://localhost:5248
-
-GET {{SpecialRequestServiceAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

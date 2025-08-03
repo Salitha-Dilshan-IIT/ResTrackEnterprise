@@ -17,14 +17,36 @@ namespace HotelServiceAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll() => Ok(_service.GetAll());
+        public IActionResult GetAll()
+        {
+            var hotels = _service.GetAll();
+
+            var result = hotels.Select(h => new HotelDto
+            {
+                Id = h.Id,
+                Name = h.Name,
+                Address = h.Address,
+                Description = h.Description
+            });
+
+            return Ok(result);
+        }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var hotel = _service.GetById(id);
             if (hotel == null) return NotFound();
-            return Ok(hotel);
+
+            var dto = new HotelDto
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Address = hotel.Address,
+                Description = hotel.Description
+            };
+
+            return Ok(dto);
         }
 
         [HttpPost]

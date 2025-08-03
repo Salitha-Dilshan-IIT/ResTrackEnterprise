@@ -1,5 +1,6 @@
-﻿using HotelServiceAPI.Models;
-using HotelServiceAPI.Data;
+﻿using HotelServiceAPI.Data;
+using HotelServiceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelServiceAPI.Repositories
 {
