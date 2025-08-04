@@ -60,5 +60,14 @@ namespace BookingServiceAPI.Controllers
             _service.Delete(id);
             return NoContent();
         }
+
+        [HttpGet("weeklyreport")]
+        [Produces("application/xml")]
+        public async Task<IActionResult> GetWeeklyReport()
+        {
+            var report = await _service.GenerateWeeklyReportAsync();
+            return Ok(report); 
+        }
+
     }
 }

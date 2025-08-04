@@ -7,10 +7,12 @@ namespace BookingServiceAPI.Services
     public class BookingService
     {
         private readonly IBookingRepository _repo;
+        private readonly ISpecialRequestRepository _specialRequestRepo;
 
-        public BookingService(IBookingRepository repo)
+        public BookingService(IBookingRepository repo, ISpecialRequestRepository specialRequestRepo)
         {
             _repo = repo;
+            _specialRequestRepo = specialRequestRepo;
         }
 
         public IEnumerable<BookingDto> GetAll()
@@ -82,6 +84,41 @@ namespace BookingServiceAPI.Services
 
             _repo.Add(booking);
         }
+
+        public async Task<WeeklyBookingReportDto> GenerateWeeklyReportAsync()
+        {
+            return await Task.Run(() =>
+            {
+                var startDate = DateTime.Today;
+                var endDate = startDate.AddDays(6);
+
+                var bookings = _repo.GetAll()
+                    .Where(b => b.CheckInDate < endDate && b.CheckOutDate > startDate)
+                    .Select(b => new BookingDetailDto
+                    {
+                        Id = b.Id,
+                        CustomerName = b.CustomerName,
+                        CheckInDate = b.CheckInDate,
+                        CheckOutDate = b.CheckOutDate,
+                        HotelId = b.HotelId,
+                        RoomId = b.RoomId,
+                        IsRecurring = b.IsRecurring,
+                        SpecialRequests = _specialRequestRepo
+                            .GetByBookingId(b.Id)
+                            .Select(r => r.Description)
+                            .ToList()
+                    }).ToList();
+
+                return new WeeklyBookingReportDto
+                {
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Bookings = bookings
+                };
+            });
+        }
+
+
 
         private void HandleRecurringBooking(CreateBookingDto dto)
         {

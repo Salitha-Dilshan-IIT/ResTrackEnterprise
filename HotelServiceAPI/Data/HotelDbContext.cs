@@ -14,17 +14,16 @@ namespace HotelServiceAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configure foreign key relationship
+            
             modelBuilder.Entity<Room>()
                 .HasOne(r => r.Hotel)
                 .WithMany(h => h.Rooms)
                 .HasForeignKey(r => r.HotelId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ✅ Configure precision for decimal
             modelBuilder.Entity<Room>()
                 .Property(r => r.PricePerNight)
-                .HasPrecision(10, 2); // Supports values like 12345678.99
+                .HasPrecision(10, 2); 
         }
     }
 }

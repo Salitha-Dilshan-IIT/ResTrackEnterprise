@@ -11,5 +11,7 @@
         public bool IsRecurring { get; set; }  // e.g. true/false checkbox
         public int? RecurringDaysInterval { get; set; }  // e.g. repeat every 7 days
         public int? RecurringCount { get; set; }  // number of times to repeat
+
+        public ICollection<SpecialRequest> SpecialRequests { get; set; }
     }
 }
