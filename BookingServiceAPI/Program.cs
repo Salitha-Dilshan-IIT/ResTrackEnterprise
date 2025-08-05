@@ -1,9 +1,12 @@
-using BookingServiceAPI.Data;
+﻿using BookingServiceAPI.Data;
 using BookingServiceAPI.Repositories;
 using BookingServiceAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 // Add services to the container.
 builder.Services.AddDbContext<BookingDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -28,6 +31,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+
+
 
 app.UseHttpsRedirection();
 

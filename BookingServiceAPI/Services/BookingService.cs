@@ -45,24 +45,31 @@ namespace BookingServiceAPI.Services
             };
         }
 
-        public void Update(int id, CreateBookingDto dto)
+        public void Update(int id, UpdateBookingDto dto)
         {
             var booking = _repo.GetById(id);
             if (booking == null) return;
 
-            // Check if new room and date range cause overlap
-            if (!IsRoomAvailable(dto.RoomId, dto.CheckInDate, dto.CheckOutDate, id))
-                throw new InvalidOperationException("The room is not available for the selected dates.");
+            bool isRoomChanged = booking.RoomId != dto.RoomId;
+            bool isCheckInChanged = booking.CheckInDate != dto.CheckInDate;
+            bool isCheckOutChanged = booking.CheckOutDate != dto.CheckOutDate;
 
+            if (isRoomChanged || isCheckInChanged || isCheckOutChanged)
+            {
+                if (!IsRoomAvailable(dto.RoomId, dto.CheckInDate, dto.CheckOutDate, id))
+                {
+                    throw new InvalidOperationException("The room is not available for the selected dates.");
+                }
+            }
 
             booking.CustomerName = dto.CustomerName;
             booking.CheckInDate = dto.CheckInDate;
             booking.CheckOutDate = dto.CheckOutDate;
-            booking.HotelId = dto.HotelId;
             booking.RoomId = dto.RoomId;
 
             _repo.Update(booking);
         }
+
 
         public void Delete(int id)
         {
@@ -155,11 +162,22 @@ namespace BookingServiceAPI.Services
 
         private bool IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut, int? excludeBookingId = null)
         {
-            return !_repo.GetAll().Any(b =>
-                b.RoomId == roomId &&
-                b.Id != excludeBookingId && 
-                checkIn < b.CheckOutDate &&
-                checkOut > b.CheckInDate);
+            var conflictingBookings = _repo.GetAll().Where(b =>
+             b.RoomId == roomId &&
+             b.Id != excludeBookingId &&
+             checkIn < b.CheckOutDate &&
+             checkOut > b.CheckInDate).ToList();
+
+            if (conflictingBookings.Any())
+            {
+                foreach (var b in conflictingBookings)
+                {
+                    Console.WriteLine($"❌ Conflict: Booking #{b.Id} — {b.CheckInDate} to {b.CheckOutDate}");
+                    Console.WriteLine($"   Room #{b.RoomId} is already booked for these dates.");
+                }
+                return false;
+            }
+            return true;
         }
 
         private Booking MapToBooking(CreateBookingDto dto)

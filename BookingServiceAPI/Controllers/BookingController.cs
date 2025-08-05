@@ -47,11 +47,17 @@ namespace BookingServiceAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] CreateBookingDto dto)
+        public IActionResult Update(int id, [FromBody] UpdateBookingDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            _service.Update(id, dto);
-            return NoContent();
+            try
+            {
+                _service.Update(id,dto);
+                return Ok(new { message = "Booking update successfully" });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]
