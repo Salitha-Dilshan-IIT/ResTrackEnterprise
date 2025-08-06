@@ -26,7 +26,8 @@ namespace HotelServiceAPI.Controllers
                 Id = r.Id,
                 RoomType = r.RoomType,
                 PricePerNight = r.PricePerNight,
-                HotelId = r.HotelId
+                HotelId = r.HotelId,
+                Description = r.Description
             });
 
             return Ok(result);
@@ -44,7 +45,8 @@ namespace HotelServiceAPI.Controllers
                 Id = room.Id,
                 RoomType = room.RoomType,
                 PricePerNight = room.PricePerNight,
-                HotelId = room.HotelId
+                HotelId = room.HotelId,
+                Description = room.Description
             };
 
             return Ok(result);

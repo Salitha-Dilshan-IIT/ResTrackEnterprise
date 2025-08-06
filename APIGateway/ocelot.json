@@ -58,7 +58,7 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/specialrequests/{specialrequestId}",
-      "UpstreamHttpMethod": [ "GET","PUT","DELETE" ]
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
     },
 
 
@@ -85,7 +85,7 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/hotel/{hotelId}",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
     },
 
     {
@@ -99,6 +99,18 @@
       ],
       "UpstreamPathTemplate": "/gateway/rooms",
       "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/rooms/{roomId}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7202
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/rooms/{roomId}",
+      "UpstreamHttpMethod": [ "GET", "PUT" , "DELETE"]
     },
     {
       "DownstreamPathTemplate": "/api/rooms/hotel/{hotelId}",
