@@ -25,6 +25,18 @@
       "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
     },
     {
+      "DownstreamPathTemplate": "/api/booking/stats",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/booking/stats",
+      "UpstreamHttpMethod": [ "GET"]
+    },
+    {
       "DownstreamPathTemplate": "/api/booking/weeklyreport",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -110,7 +122,7 @@
         }
       ],
       "UpstreamPathTemplate": "/gateway/rooms/{roomId}",
-      "UpstreamHttpMethod": [ "GET", "PUT" , "DELETE"]
+      "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ]
     },
     {
       "DownstreamPathTemplate": "/api/rooms/hotel/{hotelId}",

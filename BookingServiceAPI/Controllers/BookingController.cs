@@ -75,5 +75,12 @@ namespace BookingServiceAPI.Controllers
             return Ok(report); 
         }
 
+        [HttpGet("stats")]
+        public ActionResult<BookingStatsDto> GetStats()
+        {
+            var stats = _service.GetStatistics();
+            return Ok(stats);
+        }
+
     }
 }

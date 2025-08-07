@@ -194,6 +194,25 @@ namespace BookingServiceAPI.Services
                 RecurringDaysInterval = dto.RecurringDaysInterval
             };
         }
-    }
+    
 
+    public BookingStatsDto GetStatistics()
+        {
+            var bookings = _repo.GetAll();
+
+            int total = bookings.Count();
+
+            int active = bookings.Count(b =>
+                b.CheckInDate <= DateTime.Now &&
+                b.CheckOutDate >= DateTime.Now);
+
+
+            return new BookingStatsDto
+            {
+                TotalBookings = total,
+                ActiveStays = active
+            };
+        }
+
+    }
 }
