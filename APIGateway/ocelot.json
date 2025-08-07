@@ -5,8 +5,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7201
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/booking",
@@ -17,8 +17,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7201
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/booking/{bookingId}",
@@ -29,8 +29,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7201
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/booking/weeklyreport",
@@ -41,8 +41,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7201
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/specialrequests",
@@ -53,8 +53,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7201
+          "Host": "bookingserviceapi20250806232829-bjgbckf0esaybsce.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/specialrequests/{specialrequestId}",
@@ -67,8 +67,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7202
+          "Host": "hotelserviceapi20250806230740-hjaah5bjeggnd9fd.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/hotel",
@@ -80,8 +80,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7202
+          "Host": "hotelserviceapi20250806230740-hjaah5bjeggnd9fd.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/hotel/{hotelId}",
@@ -93,8 +93,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7202
+          "Host": "hotelserviceapi20250806230740-hjaah5bjeggnd9fd.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/rooms",
@@ -105,8 +105,8 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7202
+          "Host": "hotelserviceapi20250806230740-hjaah5bjeggnd9fd.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/rooms/{roomId}",
@@ -117,15 +117,14 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7202
+          "Host": "hotelserviceapi20250806230740-hjaah5bjeggnd9fd.canadacentral-01.azurewebsites.net",
+          "Port": 443
         }
       ],
       "UpstreamPathTemplate": "/gateway/rooms/hotel/{hotelId}",
       "UpstreamHttpMethod": [ "GET" ]
     }
 
-    // Add more routes similarly for rooms, chatbot, etc.
   ],
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:7000"
