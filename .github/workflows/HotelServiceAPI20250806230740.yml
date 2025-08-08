@@ -3,6 +3,10 @@ on:
   push:
     branches:
     - main
+    paths:
+      - 'HotelServiceAPI/**'          
+      - '.github/workflows/HotelServiceAPI20250806230740.yml'
+    workflow_dispatch:
 env:
   AZURE_WEBAPP_NAME: HotelServiceAPI20250806230740
   AZURE_WEBAPP_PACKAGE_PATH: HotelServiceAPI\publish
