@@ -1,0 +1,112 @@
+trigger:
+  branches: [ main ]
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  AZURE_SERVICE_CONNECTION: 'azure-sp'
+
+stages:
+# ===== BUILD =====
+- stage: Build
+  jobs:
+  - job: Build_APIGateway
+    steps:
+    - checkout: self
+    - task: UseDotNet@2
+      inputs: { packageType: 'sdk', version: '8.0.x' }
+    - task: DotNetCoreCLI@2
+      inputs: { command: 'restore', projects: 'APIGateway/APIGateway.csproj' }
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: 'APIGateway/APIGateway.csproj'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'APIGateway/APIGateway.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/apigateway'
+    - task: PublishBuildArtifacts@1
+      inputs: { PathtoPublish: '$(Build.ArtifactStagingDirectory)/apigateway', ArtifactName: 'apigateway-drop' }
+
+  - job: Build_Booking
+    steps:
+    - checkout: self
+    - task: UseDotNet@2
+      inputs: { packageType: 'sdk', version: '8.0.x' }
+    - task: DotNetCoreCLI@2
+      inputs: { command: 'restore', projects: 'BookingServiceAPI/BookingServiceAPI.csproj' }
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: 'BookingServiceAPI/BookingServiceAPI.csproj'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'BookingServiceAPI/BookingServiceAPI.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/booking'
+    - task: PublishBuildArtifacts@1
+      inputs: { PathtoPublish: '$(Build.ArtifactStagingDirectory)/booking', ArtifactName: 'booking-drop' }
+
+  - job: Build_Hotel
+    steps:
+    - checkout: self
+    - task: UseDotNet@2
+      inputs: { packageType: 'sdk', version: '8.0.x' }
+    - task: DotNetCoreCLI@2
+      inputs: { command: 'restore', projects: 'HotelServiceAPI/HotelServiceAPI.csproj' }
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: 'HotelServiceAPI/HotelServiceAPI.csproj'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'HotelServiceAPI/HotelServiceAPI.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/hotel'
+    - task: PublishBuildArtifacts@1
+      inputs: { PathtoPublish: '$(Build.ArtifactStagingDirectory)/hotel', ArtifactName: 'hotel-drop' }
+
+# ===== DEPLOY =====
+- stage: Deploy
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy_APIGateway
+    environment: 'prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: apigateway-drop
+          - task: AzureWebApp@1
+            displayName: Deploy APIGateway
+            inputs:
+              azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
+              appType: 'webApp'
+              appName: 'APIGateway20250806233953'
+              package: '$(Pipeline.Workspace)/apigateway-drop'
+
+  - deployment: Deploy_Booking
+    environment: 'prod'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: booking-drop
+          - task: AzureWebApp@1
+            displayName: Deploy BookingServiceAPI
+            inputs:
+              azureSubscription: '$(AZURE_SERVICE_CONNECTION)'
+              appType: 'webApp'
+              appName: 'BookingServiceAPI20250806232829'
+              package: '$(Pipeline.Workspace)/booking-
