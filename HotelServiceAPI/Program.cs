@@ -1,37 +1,13 @@
-using HotelServiceAPI.Data;
-using HotelServiceAPI.Repositories;
-using HotelServiceAPI.Services;
-using Microsoft.EntityFrameworkCore;
+using HotelServiceAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<HotelDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IHotelRepository, HotelRepository>();
-builder.Services.AddScoped<HotelService>();
-builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-builder.Services.AddScoped<RoomService>();
-
-
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// move all service registrations to the extension
+builder.Services.AddAppServices(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+// move the middleware pipeline to the extension
+app.UseApp(builder.Environment);
 
 app.Run();
