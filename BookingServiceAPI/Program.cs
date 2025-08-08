@@ -7,7 +7,7 @@ builder.Services.AddAppServices(builder.Configuration);
 
 var app = builder.Build();
 
-// move the middleware pipeline to the extension
+
 app.UseApp(builder.Environment);
 
 app.Run();
