@@ -84,7 +84,6 @@ namespace HotelServiceAPI.Controllers
             if (existingHotel == null)
                 return NotFound();
 
-            // Update entity fields with values from DTO
             existingHotel.Name = dto.HotelName;
             existingHotel.Address = dto.HotelAddress;
             existingHotel.Description = dto.HotelDescription;
