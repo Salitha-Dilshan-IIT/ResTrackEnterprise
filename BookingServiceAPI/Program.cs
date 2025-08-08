@@ -1,45 +1,13 @@
-﻿using BookingServiceAPI.Data;
-using BookingServiceAPI.Repositories;
-using BookingServiceAPI.Services;
-using Microsoft.EntityFrameworkCore;
+using BookingServiceAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-// Add services to the container.
-builder.Services.AddDbContext<BookingDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<BookingService>();
-
-builder.Services.AddScoped<ISpecialRequestRepository, SpecialRequestRepository>();
-builder.Services.AddScoped<SpecialRequestService>();
-
-builder.Services.AddControllers().AddXmlSerializerFormatters();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// move all service registrations to the extension
+builder.Services.AddAppServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-
-
-
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+// move the middleware pipeline to the extension
+app.UseApp(builder.Environment);
 
 app.Run();
