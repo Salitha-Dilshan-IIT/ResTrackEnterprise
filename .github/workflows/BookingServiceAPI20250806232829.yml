@@ -70,7 +70,7 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.PUBLISH_PROFILE_HOTEL }}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_BOOKING }}
           package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       # --- Optional: APIM import (requires Azure AD creds). Leave commented until you have a SPN.
