@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
             .WithOrigins(
                 "http://localhost:5173",
                 "https://resttrackweb-bqe3h2bta2erguet.canadacentral-01.azurewebsites.net",
-                "https://restrack.online/"
+                "https://restrack.online"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
